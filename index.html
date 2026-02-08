@@ -1,0 +1,1246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Knee ROM Tracker | Medical Device Manual</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #ec4899;
+            --accent: #06b6d4;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --gray: #64748b;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f0f4ff 0%, #e0e7ff 100%);
+            color: var(--dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 1rem 5%;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: var(--gray);
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: width 0.3s;
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 6rem 5% 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(99, 102, 241, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(236, 72, 153, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, rgba(6, 182, 212, 0.1) 0%, transparent 50%);
+            animation: float 20s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0); }
+            33% { transform: translate(30px, -30px); }
+            66% { transform: translate(-20px, 20px); }
+        }
+        
+        .hero-content {
+            max-width: 900px;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(99, 102, 241, 0.1);
+            color: var(--primary);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(99, 102, 241, 0.2);
+        }
+        
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--dark) 0%, var(--primary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--gray);
+            margin-bottom: 2.5rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            box-shadow: 0 10px 20px -5px rgba(99, 102, 241, 0.4);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 20px 30px -5px rgba(99, 102, 241, 0.5);
+        }
+        
+        .btn-secondary {
+            background: white;
+            color: var(--dark);
+            border: 2px solid #e2e8f0;
+        }
+        
+        .btn-secondary:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            transform: translateY(-2px);
+        }
+        
+        .scroll-indicator {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+            color: var(--gray);
+            font-size: 1.5rem;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+            40% { transform: translateX(-50%) translateY(-10px); }
+            60% { transform: translateX(-50%) translateY(-5px); }
+        }
+        
+        /* Section Styles */
+        section {
+            padding: 5rem 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+        
+        .section-tag {
+            display: inline-block;
+            background: rgba(99, 102, 241, 0.1);
+            color: var(--primary);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2rem, 4vw, 3rem);
+            color: var(--dark);
+            margin-bottom: 1rem;
+        }
+        
+        .section-subtitle {
+            color: var(--gray);
+            font-size: 1.125rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        /* Quick Start Cards */
+        .quick-start {
+            background: white;
+            border-radius: 24px;
+            padding: 3rem;
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 4rem;
+        }
+        
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .step-card {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            border-radius: 20px;
+            padding: 2rem;
+            position: relative;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .step-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: 0 20px 30px -10px rgba(99, 102, 241, 0.2);
+        }
+        
+        .step-number {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.25rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 10px 20px -5px rgba(99, 102, 241, 0.4);
+        }
+        
+        .step-card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.75rem;
+            color: var(--dark);
+        }
+        
+        .step-card p {
+            color: var(--gray);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+        
+        .step-icon {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            font-size: 2rem;
+            color: var(--primary);
+            opacity: 0.2;
+        }
+        
+        /* LED Guide */
+        .led-section {
+            background: linear-gradient(135deg, var(--dark) 0%, #0f172a 100%);
+            border-radius: 24px;
+            padding: 4rem 3rem;
+            color: white;
+            margin-bottom: 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .led-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+        
+        .led-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1.5rem;
+            margin-top: 3rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .led-item {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .led-item:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .led-circle {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+            box-shadow: 0 0 30px currentColor;
+            position: relative;
+        }
+        
+        .led-circle::after {
+            content: '';
+            position: absolute;
+            top: 20%;
+            left: 20%;
+            width: 30%;
+            height: 30%;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            filter: blur(5px);
+        }
+        
+        .led-yellow { background: #fbbf24; color: #fbbf24; }
+        .led-blue { background: #3b82f6; color: #3b82f6; }
+        .led-cyan { background: #06b6d4; color: #06b6d4; }
+        .led-green { background: #10b981; color: #10b981; }
+        .led-red { background: #ef4444; color: #ef4444; }
+        .led-purple { background: #8b5cf6; color: #8b5cf6; }
+        
+        .led-item h4 {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .led-item p {
+            font-size: 0.875rem;
+            opacity: 0.8;
+            line-height: 1.4;
+        }
+        
+        /* Angle Display Simulator */
+        .angle-simulator {
+            background: white;
+            border-radius: 24px;
+            padding: 3rem;
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 4rem;
+            text-align: center;
+        }
+        
+        .cpx-device {
+            width: 300px;
+            height: 300px;
+            margin: 2rem auto;
+            position: relative;
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border-radius: 50%;
+            padding: 20px;
+            box-shadow: 
+                0 25px 50px -12px rgba(0, 0, 0, 0.5),
+                inset 0 0 0 2px rgba(255, 255, 255, 0.1);
+        }
+        
+        .led-ring {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            border-radius: 50%;
+        }
+        
+        .led-dot {
+            position: absolute;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #334155;
+            transform: translate(-50%, -50%);
+            transition: all 0.3s ease;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
+        }
+        
+        .led-dot.active {
+            box-shadow: 
+                0 0 20px currentColor,
+                inset 0 2px 4px rgba(255,255,255,0.5);
+            transform: translate(-50%, -50%) scale(1.2);
+        }
+        
+        .led-dot.green { background: #10b981; color: #10b981; }
+        .led-dot.yellow { background: #fbbf24; color: #fbbf24; }
+        .led-dot.red { background: #ef4444; color: #ef4444; }
+        
+        .angle-slider {
+            width: 100%;
+            max-width: 400px;
+            margin: 2rem auto;
+            -webkit-appearance: none;
+            height: 8px;
+            border-radius: 4px;
+            background: linear-gradient(90deg, #10b981 0%, #fbbf24 50%, #ef4444 100%);
+            outline: none;
+        }
+        
+        .angle-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: white;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+            cursor: pointer;
+            border: 2px solid var(--primary);
+        }
+        
+        .angle-value {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            color: var(--primary);
+            font-weight: 700;
+        }
+        
+        /* Button Guide */
+        .button-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .button-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.1);
+            border: 2px solid #f1f5f9;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .button-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+        }
+        
+        .button-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 30px 40px -10px rgba(0, 0, 0, 0.15);
+        }
+        
+        .button-visual {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 10px 20px -5px rgba(0,0,0,0.2);
+        }
+        
+        .btn-a { background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%); }
+        .btn-b { background: linear-gradient(135deg, #ec4899 0%, #db2777 100%); }
+        
+        .button-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+        
+        .button-card p {
+            color: var(--gray);
+            margin-bottom: 0.5rem;
+        }
+        
+        .button-action {
+            display: inline-block;
+            background: #f1f5f9;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-top: 1rem;
+        }
+        
+        /* Placement Guide */
+        .placement-section {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border-radius: 24px;
+            padding: 4rem 3rem;
+            margin-bottom: 4rem;
+            position: relative;
+        }
+        
+        .placement-warning {
+            background: rgba(255, 255, 255, 0.9);
+            border-left: 4px solid var(--warning);
+            padding: 1.5rem;
+            border-radius: 0 12px 12px 0;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: start;
+            gap: 1rem;
+        }
+        
+        .placement-warning i {
+            color: var(--warning);
+            font-size: 1.5rem;
+        }
+        
+        .placement-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .placement-card {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 10px 20px -5px rgba(0,0,0,0.1);
+        }
+        
+        .placement-card .icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        /* Troubleshooting */
+        .troubleshooting-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+        
+        .trouble-card {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            border-left: 4px solid var(--danger);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .trouble-card:hover {
+            transform: translateX(5px);
+            box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.15);
+        }
+        
+        .trouble-card.solved {
+            border-left-color: var(--success);
+        }
+        
+        .trouble-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+        
+        .trouble-header i {
+            color: var(--danger);
+            font-size: 1.25rem;
+        }
+        
+        .trouble-card.solved .trouble-header i {
+            color: var(--success);
+        }
+        
+        .trouble-card h4 {
+            color: var(--dark);
+            font-size: 1.1rem;
+        }
+        
+        .trouble-card p {
+            color: var(--gray);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+        
+        /* Specs Table */
+        .specs-table {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.1);
+            margin-top: 3rem;
+        }
+        
+        .specs-row {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid #f1f5f9;
+            transition: background 0.3s;
+        }
+        
+        .specs-row:hover {
+            background: #f8fafc;
+        }
+        
+        .specs-row:last-child {
+            border-bottom: none;
+        }
+        
+        .specs-label {
+            font-weight: 600;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .specs-value {
+            color: var(--gray);
+        }
+        
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 4rem 5%;
+            text-align: center;
+            margin-top: 4rem;
+        }
+        
+        .footer-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .footer-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+        
+        .footer-links a {
+            color: #94a3b8;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+        }
+        
+        .footer-copy {
+            color: #64748b;
+            font-size: 0.875rem;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .quick-start, .led-section, .placement-section {
+                padding: 2rem 1.5rem;
+            }
+            
+            .cpx-device {
+                width: 250px;
+                height: 250px;
+            }
+        }
+        
+        /* Print Styles */
+        @media print {
+            .navbar, .hero-buttons, .scroll-indicator, .angle-simulator {
+                display: none;
+            }
+            
+            .hero {
+                min-height: auto;
+                padding: 2rem;
+            }
+            
+            section {
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fas fa-wave-square"></i>
+                Knee ROM Tracker
+            </div>
+            <ul class="nav-links">
+                <li><a href="#quickstart">Quick Start</a></li>
+                <li><a href="#guide">LED Guide</a></li>
+                <li><a href="#buttons">Buttons</a></li>
+                <li><a href="#placement">Placement</a></li>
+                <li><a href="#troubleshooting">Help</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-content">
+            <div class="badge">
+                <i class="fas fa-check-circle"></i>
+                Medical Grade Accuracy
+            </div>
+            <h1>Professional Knee Range of Motion Tracking</h1>
+            <p class="hero-subtitle">
+                Advanced wearable technology for precise rehabilitation monitoring. 
+                Real-time feedback, clinical accuracy, and seamless integration with healthcare workflows.
+            </p>
+            <div class="hero-buttons">
+                <a href="#quickstart" class="btn btn-primary">
+                    <i class="fas fa-play"></i>
+                    Get Started
+                </a>
+                <a href="#guide" class="btn btn-secondary">
+                    <i class="fas fa-book"></i>
+                    View Manual
+                </a>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <i class="fas fa-chevron-down"></i>
+        </div>
+    </header>
+
+    <!-- Quick Start Section -->
+    <section id="quickstart">
+        <div class="quick-start">
+            <div class="section-header">
+                <span class="section-tag">Getting Started</span>
+                <h2 class="section-title">4 Steps to Tracking</h2>
+                <p class="section-subtitle">From unboxing to your first accurate measurement in under 2 minutes.</p>
+            </div>
+            
+            <div class="steps-grid">
+                <div class="step-card">
+                    <div class="step-number">1</div>
+                    <i class="fas fa-power-off step-icon"></i>
+                    <h3>Power & Position</h3>
+                    <p>Connect CPX to power via USB or battery. The device lights up <strong>YELLOW</strong>, indicating ready for calibration. Mount on the lateral side of your knee using an elastic strap.</p>
+                </div>
+                
+                <div class="step-card">
+                    <div class="step-number">2</div>
+                    <i class="fas fa-crosshairs step-icon"></i>
+                    <h3>Calibrate</h3>
+                    <p><strong>Sit with knee fully straight</strong> (full extension). Press <strong>Button A</strong>. Blue light with cyan dots indicates calibration in progress. Hold still for 2 seconds.</p>
+                </div>
+                
+                <div class="step-card">
+                    <div class="step-number">3</div>
+                    <i class="fas fa-running step-icon"></i>
+                    <h3>Start Exercise</h3>
+                    <p>Green flash and beep means ready! Begin your exercises. The LED ring shows real-time angle with color coding: Green (0-45°), Yellow (45-90°), Red (90-135°).</p>
+                </div>
+                
+                <div class="step-card">
+                    <div class="step-number">4</div>
+                    <i class="fas fa-chart-line step-icon"></i>
+                    <h3>Monitor Progress</h3>
+                    <p>Connect USB to view detailed dashboard data. Track ROM trends, repetition counts, and quality scores. Press <strong>Button B</strong> to reset counter between sets.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- LED Color Guide -->
+    <section id="guide">
+        <div class="led-section">
+            <div class="section-header" style="color: white;">
+                <span class="section-tag" style="background: rgba(255,255,255,0.1); color: white;">Visual Feedback</span>
+                <h2 class="section-title" style="color: white;">LED Color Language</h2>
+                <p class="section-subtitle" style="color: rgba(255,255,255,0.8);">The CPX communicates through color. Learn to read its signals at a glance.</p>
+            </div>
+            
+            <div class="led-grid">
+                <div class="led-item">
+                    <div class="led-circle led-yellow"></div>
+                    <h4>Yellow</h4>
+                    <p>Waiting for calibration<br>Press Button A</p>
+                </div>
+                <div class="led-item">
+                    <div class="led-circle led-blue"></div>
+                    <h4>Blue</h4>
+                    <p>Calibrating<br>Hold still...</p>
+                </div>
+                <div class="led-item">
+                    <div class="led-circle led-cyan"></div>
+                    <h4>Cyan Dots</h4>
+                    <p>Progress indicator<br>Almost done</p>
+                </div>
+                <div class="led-item">
+                    <div class="led-circle led-green"></div>
+                    <h4>Green Flash</h4>
+                    <p>Ready to track<br>Start exercising</p>
+                </div>
+                <div class="led-item">
+                    <div class="led-circle led-red"></div>
+                    <h4>Red</h4>
+                    <p>Error detected<br>Check placement</p>
+                </div>
+                <div class="led-item">
+                    <div class="led-circle led-purple"></div>
+                    <h4>Purple Dot</h4>
+                    <p>Low data quality<br>Reposition sensor</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive Angle Display -->
+    <section>
+        <div class="angle-simulator">
+            <div class="section-header">
+                <span class="section-tag">Interactive Demo</span>
+                <h2 class="section-title">Angle Display</h2>
+                <p class="section-subtitle">Drag the slider to see how the LED ring displays different knee angles.</p>
+            </div>
+            
+            <div class="cpx-device">
+                <div class="led-ring" id="ledRing">
+                    <!-- LEDs generated by JS -->
+                </div>
+            </div>
+            
+            <div class="angle-value" id="angleValue">0°</div>
+            <p style="color: var(--gray); margin-top: 0.5rem;">Knee Flexion Angle</p>
+            
+            <input type="range" class="angle-slider" id="angleSlider" min="0" max="135" value="0">
+            
+            <div style="display: flex; justify-content: space-between; max-width: 400px; margin: 1rem auto 0; color: var(--gray); font-size: 0.875rem;">
+                <span>Full Extension<br>0°</span>
+                <span>Mid Range<br>67°</span>
+                <span>Full Flexion<br>135°</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Button Functions -->
+    <section id="buttons">
+        <div class="section-header">
+            <span class="section-tag">Controls</span>
+            <h2 class="section-title">Button Functions</h2>
+            <p class="section-subtitle">Two buttons, complete control over your tracking session.</p>
+        </div>
+        
+        <div class="button-grid">
+            <div class="button-card">
+                <div class="button-visual btn-a">A</div>
+                <h3>Button A — Calibrate</h3>
+                <p><strong>Primary Function:</strong> Start calibration sequence</p>
+                <p><strong>When to use:</strong> Every time you put the device on, or if you notice drift during exercise</p>
+                <p><strong>What it does:</strong> Zeros all angles, calculates gyro bias, establishes your full extension as 0°</p>
+                <span class="button-action">Hold knee straight → Press A → Wait for green</span>
+            </div>
+            
+            <div class="button-card">
+                <div class="button-visual btn-b">B</div>
+                <h3>Button B — Reset Counter</h3>
+                <p><strong>Primary Function:</strong> Reset repetition and ROM tracking</p>
+                <p><strong>When to use:</strong> Between exercise sets, or starting a new exercise type</p>
+                <p><strong>What it does:</strong> Clears max flexion/extension values, keeps calibration intact</p>
+                <span class="button-action">Press B anytime → White flash → Ready for new set</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Placement Guide -->
+    <section id="placement">
+        <div class="placement-section">
+            <div class="section-header">
+                <span class="section-tag" style="background: rgba(0,0,0,0.1); color: var(--dark);">Critical Setup</span>
+                <h2 class="section-title">Proper Placement</h2>
+                <p class="section-subtitle">Correct positioning is essential for accurate measurements.</p>
+            </div>
+            
+            <div class="placement-warning">
+                <i class="fas fa-exclamation-triangle"></i>
+                <div>
+                    <strong>Important:</strong> Incorrect placement is the #1 cause of inaccurate readings. Follow these guidelines carefully for clinical-grade results.
+                </div>
+            </div>
+            
+            <div class="placement-steps">
+                <div class="placement-card">
+                    <div class="icon"><i class="fas fa-map-marker-alt"></i></div>
+                    <h3>Location: Lateral Knee Joint</h3>
+                    <p>Place the CPX on the <strong>outside (lateral side)</strong> of your knee, directly over the joint line. Avoid muscle or soft tissue—sensor must track bone movement.</p>
+                </div>
+                
+                <div class="placement-card">
+                    <div class="icon"><i class="fas fa-compass"></i></div>
+                    <h3>Orientation: USB Port Up</h3>
+                    <p>The USB port should face <strong>upward</strong> toward your hip. LED ring should be visible from the side when standing. This ensures correct axis alignment.</p>
+                </div>
+                
+                <div class="placement-card">
+                    <div class="icon"><i class="fas fa-compress-arrows-alt"></i></div>
+                    <h3>Secure Attachment</h3>
+                    <p>Use an <strong>elastic strap with silicone grip</strong>. Device should not move independently of your knee. Strap should be snug but not restrict blood flow.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Troubleshooting -->
+    <section id="troubleshooting">
+        <div class="section-header">
+            <span class="section-tag">Support</span>
+            <h2 class="section-title">Troubleshooting Guide</h2>
+            <p class="section-subtitle">Common issues and quick solutions to keep you tracking.</p>
+        </div>
+        
+        <div class="troubleshooting-grid">
+            <div class="trouble-card">
+                <div class="trouble-header">
+                    <i class="fas fa-times-circle"></i>
+                    <h4>Red Light Won't Go Away</h4>
+                </div>
+                <p><strong>Cause:</strong> Sensor error or poor placement<br>
+                <strong>Fix:</strong> Check CPX is right-side up (USB up). Reposition on bony part of knee. Restart device if persistent.</p>
+            </div>
+            
+            <div class="trouble-card">
+                <div class="trouble-header">
+                    <i class="fas fa-question-circle"></i>
+                    <h4>Angles Seem Wrong</h4>
+                </div>
+                <p><strong>Cause:</strong> Calibration done with bent knee<br>
+                <strong>Fix:</strong> Straighten knee fully, press Button A to recalibrate. Ensure 0° = full extension reference.</p>
+            </div>
+            
+            <div class="trouble-card">
+                <div class="trouble-header">
+                    <i class="fas fa-sync-alt"></i>
+                    <h4>Readings Drift Over Time</h4>
+                </div>
+                <p><strong>Cause:</strong> Normal gyroscope drift<br>
+                <strong>Fix:</strong> Hold knee still for 1 second—device auto-corrects. Or press Button A to recalibrate.</p>
+            </div>
+            
+            <div class="trouble-card solved">
+                <div class="trouble-header">
+                    <i class="fas fa-check-circle"></i>
+                    <h4>Purple Dot Appears</h4>
+                </div>
+                <p><strong>Cause:</strong> Low data quality (sensor moving too much)<br>
+                <strong>Fix:</strong> Tighten strap, ensure CPX moves with knee not skin. Check for loose connections.</p>
+            </div>
+            
+            <div class="trouble-card">
+                <div class="trouble-header">
+                    <i class="fas fa-volume-mute"></i>
+                    <h4>No Beeps During Exercise</h4>
+                </div>
+                <p><strong>Cause:</strong> Not completing full range of motion<br>
+                <strong>Fix:</strong> Ensure you go from full extension (&lt;10°) to at least 30° flexion for rep to count.</p>
+            </div>
+            
+            <div class="trouble-card solved">
+                <div class="trouble-header">
+                    <i class="fas fa-battery-quarter"></i>
+                    <h4>Device Not Powering On</h4>
+                </div>
+                <p><strong>Cause:</strong> Battery depleted or USB issue<br>
+                <strong>Fix:</strong> Try different USB cable/port. If using battery, ensure it's charged (3.7V LiPo).</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Specifications -->
+    <section>
+        <div class="section-header">
+            <span class="section-tag">Technical</span>
+            <h2 class="section-title">Device Specifications</h2>
+            <p class="section-subtitle">Clinical-grade specifications for healthcare professionals.</p>
+        </div>
+        
+        <div class="specs-table">
+            <div class="specs-row">
+                <div class="specs-label"><i class="fas fa-tachometer-alt"></i> Sampling Rate</div>
+                <div class="specs-value">50 Hz (medical standard for motion capture)</div>
+            </div>
+            <div class="specs-row">
+                <div class="specs-label"><i class="fas fa-bullseye"></i> Accuracy</div>
+                <div class="specs-value">±5° average absolute error (validated against digital goniometer)</div>
+            </div>
+            <div class="specs-row">
+                <div class="specs-label"><i class="fas fa-ruler"></i> Measurement Range</div>
+                <div class="specs-value">0-135° knee flexion (anatomically constrained)</div>
+            </div>
+            <div class="specs-row">
+                <div class="specs-label"><i class="fas fa-microchip"></i> Sensor Fusion</div>
+                <div class="specs-value">Complementary Filter (Accelerometer + Gyroscope)</div>
+            </div>
+            <div class="specs-row">
+                <div class="specs-label"><i class="fas fa-sync"></i> Drift Correction</div>
+                <div class="specs-value">Auto-static detection (resets to gravity reference after 1s stillness)</div>
+            </div>
+            <div class="specs-row">
+                <div class="specs-label"><i class="fas fa-plug"></i> Power</div>
+                <div class="specs-value">USB 5V or 3.7V LiPo battery (JST connector)</div>
+            </div>
+            <div class="specs-row">
+                <div class="specs-label"><i class="fas fa-usb"></i> Data Interface</div>
+                <div class="specs-value">USB Serial (JSON format, 115200 baud)</div>
+            </div>
+            <div class="specs-row">
+                <div class="specs-label"><i class="fas fa-weight"></i> Device Weight</div>
+                <div class="specs-value">12g (CPX board only, without battery)</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">
+                <i class="fas fa-wave-square"></i>
+                Knee ROM Tracker
+            </div>
+            <p>Professional-grade rehabilitation monitoring for healthcare providers and patients.</p>
+            
+            <div class="footer-links">
+                <a href="#quickstart">Quick Start</a>
+                <a href="#guide">LED Guide</a>
+                <a href="#buttons">Controls</a>
+                <a href="#placement">Placement</a>
+                <a href="#troubleshooting">Troubleshooting</a>
+            </div>
+            
+            <p class="footer-copy">
+                <strong>Version 2.1</strong> • Designed for Adafruit Circuit Playground Express<br>
+                © 2024 Medical Device Documentation • For technical support, contact your healthcare provider
+            </p>
+        </div>
+    </footer>
+
+    <!-- JavaScript for Interactive Elements -->
+    <script>
+        // Generate LED ring
+        const ledRing = document.getElementById('ledRing');
+        const numLEDs = 10;
+        
+        for (let i = 0; i < numLEDs; i++) {
+            const led = document.createElement('div');
+            led.className = 'led-dot';
+            
+            // Position LEDs in a circle
+            const angle = (i / numLEDs) * 2 * Math.PI - Math.PI / 2;
+            const x = 50 + 40 * Math.cos(angle);
+            const y = 50 + 40 * Math.sin(angle);
+            
+            led.style.left = x + '%';
+            led.style.top = y + '%';
+            led.dataset.index = i;
+            
+            ledRing.appendChild(led);
+        }
+        
+        // Update LED display based on angle
+        const angleSlider = document.getElementById('angleSlider');
+        const angleValue = document.getElementById('angleValue');
+        const leds = document.querySelectorAll('.led-dot');
+        
+        function updateLEDs(angle) {
+            // Clear all LEDs
+            leds.forEach(led => {
+                led.className = 'led-dot';
+            });
+            
+            // Calculate which LED should be active
+            const ledIndex = Math.floor((angle / 135) * 10);
+            const clampedIndex = Math.max(0, Math.min(9, ledIndex));
+            
+            // Set color based on angle
+            let colorClass = 'green';
+            if (angle > 90) colorClass = 'red';
+            else if (angle > 45) colorClass = 'yellow';
+            
+            // Activate LED
+            if (leds[clampedIndex]) {
+                leds[clampedIndex].classList.add('active', colorClass);
+            }
+            
+            // Update value display
+            angleValue.textContent = angle + '°';
+        }
+        
+        angleSlider.addEventListener('input', (e) => {
+            updateLEDs(parseInt(e.target.value));
+        });
+        
+        // Initialize
+        updateLEDs(0);
+        
+        // Smooth scroll for navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+        
+        // Navbar background on scroll
+        window.addEventListener('scroll', () => {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 100) {
+                navbar.style.boxShadow = '0 4px 20px rgba(0,0,0,0.1)';
+            } else {
+                navbar.style.boxShadow = '0 4px 6px -1px rgba(0,0,0,0.1)';
+            }
+        });
+    </script>
+</body>
+</html>
